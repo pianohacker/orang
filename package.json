@@ -4,6 +4,11 @@
   "description": "Computerized filing system",
   "devDependencies": {
     "broccoli": "^0.16.8",
+    "broccoli-babel-transpiler": "^5.4.5",
+    "broccoli-browserify": "^0.1.0",
+    "broccoli-funnel": "^0.2.8",
+    "broccoli-merge-trees": "^0.2.3",
+    "broccoli-sass": "^0.6.6",
     "redux-devtools": "^2.0.0"
   },
   "dependencies": {
