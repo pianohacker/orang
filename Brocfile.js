@@ -9,6 +9,9 @@ js = babel(js, {});
 js = browserify(js, {
 	entries: ['./orang'],
 	outputFile: '/gen/bundle.js',
+	browserify: {
+		paths: ['.'],
+	},
 });
 ////var styles = sass(['scss'], 'encal.scss', 'assets/encal.css');
 
