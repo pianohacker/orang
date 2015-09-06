@@ -5,12 +5,9 @@ var mergeTrees = require('broccoli-merge-trees');
 var sass = require('broccoli-sass');
 
 var js = './frontend/js';
-js = babel(js, {
-	modules: 'amd',
-	sourceMap: 'inline',
-});
+js = babel(js, {});
 js = browserify(js, {
-	entries: ['./orang.js'],
+	entries: ['./orang'],
 	outputFile: '/gen/bundle.js',
 });
 ////var styles = sass(['scss'], 'encal.scss', 'assets/encal.css');

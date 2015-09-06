@@ -1,1 +1,7 @@
-console.log('sup');
+import React from 'react';
+import App from './ui/app';
+
+React.render(
+	<App />,
+	document.body
+);
