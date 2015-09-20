@@ -1,11 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+
+import * as actions from './control/actions';
+import { coreReducer, createOurStore } from './control/core';
 import App from './ui/app';
-import { coreReducer } from './control/core';
+
+const store = createOurStore(coreReducer);
+store.dispatch(actions.load());
 
 React.render(
-	<Provider store={createStore(coreReducer)}>
+	<Provider store={store}>
 		{() => <App />}
 	</Provider>,
 	document.body

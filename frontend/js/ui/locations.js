@@ -1,5 +1,9 @@
 import Item from './item';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import u from 'updeep';
+
+import * as actions from '../control/actions';
 
 class Bin extends Component {
 	render() {
@@ -33,3 +37,16 @@ export default class Locations extends Component {
 		);
 	}
 }
+
+function select(state) {
+	return {
+		locations: u.map(
+			u({
+				bins: u.map(u.reject((item) => !item.name.match(state.search)))
+			}),
+			state.locations
+		)
+	};
+}
+
+export default connect(select)(Locations);
