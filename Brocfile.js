@@ -13,8 +13,8 @@ js = browserify(js, {
 		paths: ['.'],
 	},
 });
-////var styles = sass(['scss'], 'encal.scss', 'assets/encal.css');
+var styles = sass(['frontend/scss'], 'orang.scss', '/gen/bundle.css');
 
-var tree = mergeTrees(['frontend/static', js]);
+var tree = mergeTrees(['frontend/static', js, styles]);
 
 module.exports = tree;
