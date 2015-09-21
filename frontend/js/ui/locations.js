@@ -5,10 +5,14 @@ import u from 'updeep';
 
 import * as actions from '../control/actions';
 
-class Bin extends Component {
+class _Bin extends Component {
 	render() {
+		const { dispatch } = this.props;
+
 		return (
 			<div className="bin">
+				{this.props.bin_no}
+				<button onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no))}>Create Item</button>
 				<ul>
 					{this.props.items.map((item) => { return <Item {...item} /> })}
 				</ul>
@@ -16,17 +20,22 @@ class Bin extends Component {
 		);
 	}
 }
+const Bin = connect()(_Bin);
 
-class Location extends Component {
+class _Location extends Component {
 	render() {
+		const { dispatch } = this.props;
+
 		return (
 			<div className="location">
 				{this.props.name}
-				{this.props.bins.map((bin, i) => { return <Bin key={i} items={bin} /> })}
+				<button onClick={() => dispatch(actions.createBin(this.props.id))}>Create Bin</button>
+				{this.props.bins.map((bin, i) => { return <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} /> })}
 			</div>
 		);
 	}
 }
+const Location = connect()(_Location);
 
 export default class Locations extends Component {
 	render() {

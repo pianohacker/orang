@@ -1,5 +1,6 @@
 import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import _ from 'lodash';
 import u from 'updeep';
 
 const DEFAULT_STATE = {
@@ -7,17 +8,47 @@ const DEFAULT_STATE = {
 	search: '',
 };
 
+function _arrayAdd(val) {
+	return (arr) => [].concat(arr, [val])
+}
+
 export function coreReducer(state = DEFAULT_STATE, action) {
-	console.debug('action', action);
+	console.debug('Action:', action);
+
 	switch (action.type) {
-		case 'createLocation':
+		case 'createBin':
+			var index = _.findIndex(state.locations, (location) => location.id == action.loc_id);
 			return u({
-				locations: (locations) => [].concat(locations, [{name: action.name, bins: [[]]}])
+				locations: {
+					[index]: {
+						bins: _arrayAdd([]),
+					}
+				},
 			}, state);
+
+		case 'createItem':
+			var index = _.findIndex(state.locations, (location) => location.id == action.loc_id);
+			return u({
+				locations: {
+					[index]: {
+						bins: {
+							[action.bin_no]: _arrayAdd({name: action.name}),
+						},
+					}
+				},
+			}, state);
+
+		case 'createLocation':
+			var id = _.max(state.locations, (location) => location.id);
+			return u({
+				locations: _arrayAdd({id: id, name: action.name, bins: [[]]})
+			}, state);
+
 		case 'load':
 			return u({
 				locations: action.locations
 			}, state);
+
 		case 'setSearch':
 			return u({ search: action.search }, state);
 

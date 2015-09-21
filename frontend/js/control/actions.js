@@ -44,13 +44,21 @@ function _action(name, ...fields) {
 	};
 }
 
-function _save(data) {
-	localStorage.orangData = JSON.stringify(data);
+function _save(state) {
+	localStorage.orangData = JSON.stringify({locations: state.locations});
 }
 
+export const createBin = _action('createBin', 'loc_id', (action) => (dispatch, getState) => {
+	dispatch(action);
+	_save(getState());
+});
+export const createItem = _action('createItem', 'loc_id', 'bin_no', (action) => (dispatch, getState) => {
+	dispatch(u({name: prompt("Name of item:")}, action));
+	_save(getState());
+});
 export const createLocation = _action('createLocation', (action) => (dispatch, getState) => {
 	dispatch(u({name: prompt("Name of location:")}, action));
-	_save({locations: getState().locations});
+	_save(getState());
 });
 export const load = _action('load', (action) => (dispatch) => {
 	if (localStorage.orangData) {
