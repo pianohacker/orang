@@ -14,7 +14,7 @@ class _Bin extends Component {
 				{this.props.bin_no}
 				<button onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no))}>Create Item</button>
 				<ul>
-					{this.props.items.map((item) => { return <Item {...item} /> })}
+					{this.props.items.map((item, i) => { return <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} /> })}
 				</ul>
 			</div>
 		);
@@ -30,7 +30,9 @@ class _Location extends Component {
 			<div className="location">
 				{this.props.name}
 				<button onClick={() => dispatch(actions.createBin(this.props.id))}>Create Bin</button>
-				{this.props.bins.map((bin, i) => { return <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} /> })}
+				<div className="bins">
+					{this.props.bins.map((bin, i) => { return <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} /> })}
+				</div>
 			</div>
 		);
 	}

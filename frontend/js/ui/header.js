@@ -22,6 +22,7 @@ class Header extends Component {
 			<header>
 				<SearchBar onSearchChanged={(value) => dispatch(actions.setSearch(value))} />
 				<button onClick={() => dispatch(actions.createLocation())}>Add Location</button>
+				<button onClick={() => dispatch(actions.exportData())}>Export Data</button>
 			</header>
 		);
 	}

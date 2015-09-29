@@ -1,9 +1,19 @@
 // 0.422, 0.563, 0.75, 1, 1.333, 1.777, 2.369, 3.157
+// 1.0000 1.3330 1.7769 2.3686 3.1573 4.2087 5.6102 7.4784 9.9688 13.2884 17.7134
+// 23.6119 31.4747 41.9558 55.9271 74.5508 99.3762 132.4685 176.5805 235.3818 313.7639
 // (from ratio of 1.333)
+
+.bins {
+	width: 100%;
+}
 
 .bin {
 	background-color: #EEE;
+	display: inline-block;
 	padding: .333em;
+	margin-left: .444em;
 	margin-top: .444em;
 	min-height: 1em;
+	vertical-align: top;
+	width: 300px;
 }

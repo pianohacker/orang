@@ -44,6 +44,18 @@ export function coreReducer(state = DEFAULT_STATE, action) {
 				locations: _arrayAdd({id: id, name: action.name, bins: [[]]})
 			}, state);
 
+		case 'deleteItem':
+			var index = _.findIndex(state.locations, (location) => location.id == action.loc_id);
+			return u({
+				locations: {
+					[index]: {
+						bins: {
+							[action.bin_no]: (arr) => [].concat(arr.slice(0, action.index), arr.slice(action.index + 1)),
+						},
+					}
+				},
+			}, state);
+
 		case 'load':
 			return u({
 				locations: action.locations
@@ -51,6 +63,20 @@ export function coreReducer(state = DEFAULT_STATE, action) {
 
 		case 'setSearch':
 			return u({ search: action.search }, state);
+
+		case 'updateItem':
+			var index = _.findIndex(state.locations, (location) => location.id == action.loc_id);
+			return u({
+				locations: {
+					[index]: {
+						bins: {
+							[action.bin_no]: {
+								[action.index]: u(action.changes),
+							},
+						},
+					}
+				},
+			}, state);
 
 		default: return state;
 	}
