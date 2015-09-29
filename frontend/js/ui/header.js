@@ -7,9 +7,7 @@ import * as actions from '../control/actions';
 class SearchBar extends Component {
 	render() {
 		return (
-			<div id="searchbar">
-				<input type="search" onChange={(event) => {this.props.onSearchChanged(event.target.value)}}/>
-			</div>
+			<input id="searchbar" type="search" onChange={(event) => {this.props.onSearchChanged(event.target.value)}}/>
 		);
 	}
 }
