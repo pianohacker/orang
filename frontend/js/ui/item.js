@@ -11,6 +11,7 @@ class Item extends Component {
 		return (
 			<li className="item">
 				<common.EditableText onChange={(value) => dispatch(actions.updateItem(this.props.loc_id, this.props.bin_no, this.props.index, {name: value}))} text={this.props.name} />
+				{' (' + (this.props.size || 1) + ')'}
 				<button title="Delete item" onClick={() => dispatch(actions.deleteItem(this.props.loc_id, this.props.bin_no, this.props.index))}>-</button>
 			</li>
 		)
