@@ -52,11 +52,14 @@ export default class Locations extends Component {
 }
 
 function select(state) {
+	// Only match case-insensitively if no uppercase letters in search
+	var searcher = new RegExp(state.filters.search, state.filters.search.match(/[A-Z]/) ? undefined : 'i');
+
 	return {
 		locations: u.map(
 			u({
 
-				bins: u.map(u.reject((item) => !item.name.match(state.filters.search)))
+				bins: u.map(u.reject((item) => !item.name.match(searcher)))
 			}),
 			state.locations
 		)
