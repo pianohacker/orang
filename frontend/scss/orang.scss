@@ -5,21 +5,86 @@
 
 body, html {
 	font: 16px/1.25 sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #8AB5F4 -moz-linear-gradient(center top, #8AB5F4 0%, #E2EDF4 100%) no-repeat 0 0;
+	min-height: 100vh;
 }
 
 .bin {
 	background-color: #EEE;
+	background-color: rgba(255, 255, 255, .75);
 	display: inline-block;
 	padding: .422em;
 	margin-left: .563em;
 	margin-top: .563em;
-	min-height: 1em;
+	min-height: 1.633em;
+	position: relative;
+	transition: background-color .316s ease;
 	vertical-align: top;
 	width: 17.713em;
+
+	&.empty {
+		background-color: rgba(255, 255, 255, .422);
+	}
+
+	> header {
+		> h1 {
+			font-size: 1em;
+			left: 0;
+			margin: 0;
+			padding: .316em;
+			position: absolute;
+			text-align: center;
+			top: 0;
+			width: 1.333em;
+		}
+
+		> button {
+			opacity: .237;
+			position: absolute;
+			right: 0;
+			top: 0;
+			transition: opacity .316s ease;
+		}
+	}
+
+	&:hover > header > button {
+		opacity: 1;
+	}
 }
 
 .bins {
 	width: 100%;
+}
+
+button {
+	background: #6A95F4;
+	border: none;
+	color: white;
+	font-size: 1em;
+	font-weight: bold;
+
+	&:hover {
+		background: #8AB5F4;
+	}
+}
+
+.item {
+	list-style-type: none;
+
+	> button {
+		margin-left: .75em;
+		opacity: .237;
+		transition: opacity .316s ease;
+	}
+
+	&:hover > button {
+		opacity: 1;
+	}
 }
 
 .location {

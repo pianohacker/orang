@@ -11,7 +11,7 @@ const DEFAULT_DATA = {
 				[],
 				[],
 				[
-					{ name: 'Measuring Tape' },
+					{ name: 'Measuring Tape', size: 4 },
 				],
 				[],
 			],
@@ -21,13 +21,11 @@ const DEFAULT_DATA = {
 			name: 'Cables',
 			bins: [
 				[
-					{ name: 'Micro USB Cables' },
+					{ name: 'Micro USB Cables', size: 4 },
 				],
-				[],
 				[
-					{ name: 'HDMI Cables' },
+					{ name: 'HDMI Cables', size: 4 },
 				],
-				[],
 			],
 		}
 	],

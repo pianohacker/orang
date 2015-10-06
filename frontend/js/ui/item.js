@@ -9,9 +9,9 @@ class Item extends Component {
 		const { dispatch } = this.props;
 
 		return (
-			<li>
+			<li className="item">
 				<common.EditableText onChange={(value) => dispatch(actions.updateItem(this.props.loc_id, this.props.bin_no, this.props.index, {name: value}))} text={this.props.name} />
-				<button onClick={() => dispatch(actions.deleteItem(this.props.loc_id, this.props.bin_no, this.props.index))}>Delete Item</button>
+				<button title="Delete item" onClick={() => dispatch(actions.deleteItem(this.props.loc_id, this.props.bin_no, this.props.index))}>-</button>
 			</li>
 		)
 	}

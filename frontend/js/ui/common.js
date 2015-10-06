@@ -31,5 +31,6 @@ export class EditableText extends Component {
 	componentDidUpdate() {
 		var input = React.findDOMNode(this.refs.input);
 		input.focus();
+		input.setSelectionRange(this.props.text.length, this.props.text.length);
 	}
 }
