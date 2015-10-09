@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+export const SIZE_NAMES = {1: 'S', 4: 'M', 9: 'L', 16: 'X'};
+
 export class EditableText extends Component {
 	constructor(props) {
 		super(props);

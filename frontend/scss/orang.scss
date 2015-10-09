@@ -48,12 +48,12 @@ body {
 	margin-top: .563em;
 	min-height: 1.633em;
 	position: relative;
-	transition: background-color .316s ease;
+	transition: opacity .316s ease;
 	vertical-align: top;
 	width: 17.713em;
 
 	&.empty {
-		background-color: rgba(255, 255, 255, .422);
+		opacity: .563;
 	}
 
 	> header {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import u from 'updeep';
 
 import * as actions from '../control/actions';
+import * as common from './common';
 
 class _Bin extends Component {
 	render() {
@@ -24,7 +25,6 @@ class _Bin extends Component {
 }
 const Bin = connect()(_Bin);
 
-var sizeNames = {1: 'S', 4: 'M', 9: 'L', 16: 'X'};
 class _Location extends Component {
 	render() {
 		const { dispatch } = this.props;
@@ -36,7 +36,7 @@ class _Location extends Component {
 					<h1>{this.props.name}</h1>
 					<div className="item-creators">
 						<i className="fa fa-plus"></i>
-						{[1, 4, 9, 16].map((size) => <button>{sizeNames[size]}</button>)}
+						{[1, 4, 9, 16].map((size) => <button>{common.SIZE_NAMES[size]}</button>)}
 					</div>
 				</header>
 				<div className="bins">
