@@ -13,8 +13,29 @@ js = browserify(js, {
 		paths: ['.'],
 	},
 });
-var styles = sass(['frontend/scss'], 'orang.scss', '/gen/bundle.css');
 
-var tree = mergeTrees(['frontend/static', js, styles]);
+var fontAwesomeScss = funnel('node_modules/font-awesome/scss', {
+	destDir: 'font-awesome'
+});
+var fontAwesomeFonts = funnel('node_modules/font-awesome/fonts', {
+	destDir: 'frontend/fonts'
+});
+
+var styles = mergeTrees([
+	'frontend/scss',
+	fontAwesomeScss
+]);	
+var styles = sass([styles], 'orang.scss', '/gen/bundle.css');
+
+var fonts = funnel(
+	mergeTrees([
+		fontAwesomeFonts
+	]),
+	{
+		srcDir: 'frontend',
+	}
+);
+
+var tree = mergeTrees(['frontend/static', js, styles, fonts]);
 
 module.exports = tree;

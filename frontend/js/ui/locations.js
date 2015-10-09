@@ -13,7 +13,7 @@ class _Bin extends Component {
 			<div className={"bin" + (this.props.items.length == 0 ? " empty" : "")}>
 				<header>
 					<h1>{this.props.bin_no}</h1>
-					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no))}>+</button>
+					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no))}><i className="fa fa-plus"></i></button>
 				</header>
 				<ul className="items">
 					{this.props.items.map((item, i) => { return <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} /> })}
@@ -24,6 +24,7 @@ class _Bin extends Component {
 }
 const Bin = connect()(_Bin);
 
+var sizeNames = {1: 'S', 4: 'M', 9: 'L', 16: 'X'};
 class _Location extends Component {
 	render() {
 		const { dispatch } = this.props;
@@ -33,6 +34,10 @@ class _Location extends Component {
 			<div className="location">
 				<header>
 					<h1>{this.props.name}</h1>
+					<div className="item-creators">
+						<i className="fa fa-plus"></i>
+						{[1, 4, 9, 16].map((size) => <button>{sizeNames[size]}</button>)}
+					</div>
 				</header>
 				<div className="bins">
 					{this.props.bins.map((bin, i) => { return <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} /> })}
