@@ -1,6 +1,8 @@
-import * as redux from 'redux';
-import thunkMiddleware from 'redux-thunk';
 import _ from 'lodash';
+import * as redux from 'redux';
+import { persistStore } from 'redux-persist'
+import { REHYDRATE } from 'redux-persist/constants'
+import thunkMiddleware from 'redux-thunk';
 import u from 'updeep';
 
 const DEFAULT_FILTERS = {
@@ -70,8 +72,8 @@ function locationsReducer(locations = [], action) {
 				}
 			}, locations);
 
-		case 'load':
-			return action.locations;
+		case REHYDRATE:
+			return action.key == 'locations' ? action.payload : locations;
 
 		case 'updateItem':
 			return u({
@@ -88,9 +90,17 @@ function locationsReducer(locations = [], action) {
 	}
 }
 
-export const coreReducer = redux.combineReducers({
+const coreReducer = redux.combineReducers({
 	filters: filtersReducer,
 	locations: locationsReducer,
 });
 
-export const createOurStore = redux.applyMiddleware(thunkMiddleware)(redux.createStore);
+export function createOurStore() {
+	var creator = redux.applyMiddleware(thunkMiddleware)(redux.createStore);
+	// We do not use autoRehydrate because array keys are transformed to objects
+	// (https://github.com/rt2zz/redux-persist/issues/16)
+	var store = creator(coreReducer);
+	persistStore(store, {blacklist: ['filters']});
+
+	return store;
+}
