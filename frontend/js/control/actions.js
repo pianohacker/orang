@@ -51,7 +51,11 @@ export const createBin = _action('createBin', 'loc_id', (action) => (dispatch, g
 	dispatch(action);
 	_save(getState());
 });
-export const createItem = _action('createItem', 'loc_id', 'bin_no', (action) => (dispatch, getState) => {
+export const createItem = _action('createItem', 'loc_id', 'bin_no', 'size', (action) => (dispatch, getState) => {
+	dispatch(u({name: prompt("Name of item:")}, action));
+	_save(getState());
+});
+export const createItemFitted = _action('createItemFitted', 'loc_id', 'size', (action) => (dispatch, getState) => {
 	dispatch(u({name: prompt("Name of item:")}, action));
 	_save(getState());
 });

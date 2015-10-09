@@ -14,7 +14,7 @@ class _Bin extends Component {
 			<div className={"bin" + (this.props.items.length == 0 ? " empty" : "")}>
 				<header>
 					<h1>{this.props.bin_no}</h1>
-					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no))}><i className="fa fa-plus"></i></button>
+					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no, 1))}><i className="fa fa-plus"></i></button>
 				</header>
 				<ul className="items">
 					{this.props.items.map((item, i) => { return <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} /> })}
@@ -36,7 +36,11 @@ class _Location extends Component {
 					<h1>{this.props.name}</h1>
 					<div className="item-creators">
 						<i className="fa fa-plus"></i>
-						{[1, 4, 9, 16].map((size) => <button>{common.SIZE_NAMES[size]}</button>)}
+						{[1, 4, 9, 16].map(
+							(size) => <button onClick={() => dispatch(actions.createItemFitted(this.props.id, size))}>
+								{common.SIZE_NAMES[size]}
+							</button>
+						)}
 					</div>
 				</header>
 				<div className="bins">

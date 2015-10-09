@@ -32,11 +32,26 @@ function locationsReducer(locations = [], action) {
 				}
 			}, locations);
 
+		case 'createItemFitted':
+			// Randomly choose one of the emptiest bins
+			var [emptiest_bin, ] = _(locations[loc_index].bins)
+				.map((bin, i) => [i, _.sum(bin, (item) => (item.size || 1))])
+				.shuffle()
+				.min(1);
+
+			action = u({bin_no: emptiest_bin}, action);
+
+			// fallthrough
 		case 'createItem':
 			return u({
 				[loc_index]: {
 					bins: {
-						[action.bin_no]: _arrayAdd({name: action.name, size: 1}),
+						[action.bin_no]: _arrayAdd({
+							name: action.name,
+							size: action.size,
+							timeCreated: (new Date()).valueOf(),
+							timeUpdated: (new Date()).valueOf(),
+						}),
 					},
 				}
 			}, locations);
@@ -63,7 +78,7 @@ function locationsReducer(locations = [], action) {
 				[loc_index]: {
 					bins: {
 						[action.bin_no]: {
-							[action.index]: u(action.changes),
+							[action.index]: u(u({timeUpdated: (new Date()).valueOf()}, action.changes)),
 						},
 					},
 				}
