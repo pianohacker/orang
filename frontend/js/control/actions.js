@@ -2,35 +2,6 @@ import { saveAs } from 'browser-filesaver/FileSaver';
 import _ from 'lodash';
 import u from 'updeep';
 
-const DEFAULT_DATA = {
-	locations: [
-		{
-			id: 1,
-			name: 'Hex',
-			bins: [
-				[],
-				[],
-				[
-					{ name: 'Measuring Tape', size: 4 },
-				],
-				[],
-			],
-		},
-		{
-			id: 2,
-			name: 'Cables',
-			bins: [
-				[
-					{ name: 'Micro USB Cables', size: 4 },
-				],
-				[
-					{ name: 'HDMI Cables', size: 4 },
-				],
-			],
-		}
-	],
-};
-
 function _action(name, ...fields) {
 	var postCreate = (action) => action;
 	if (typeof(fields[fields.length-1]) == 'function') postCreate = fields.pop();
