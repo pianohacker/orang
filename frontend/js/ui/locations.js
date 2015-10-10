@@ -17,7 +17,7 @@ class _Bin extends Component {
 					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no, 1))}><i className="fa fa-plus"></i></button>
 				</header>
 				<ul className="items">
-					{this.props.items.map((item, i) => { return <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} /> })}
+					{this.props.items.map((item, i) => <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} />)}
 				</ul>
 			</div>
 		);
@@ -47,7 +47,7 @@ class _Location extends Component {
 					</div>
 				</header>
 				<div className="bins">
-					{this.props.bins.map((bin, i) => { return <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} /> })}
+					{this.props.bins.map((bin, i) => <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} />)}
 				</div>
 			</div>
 		);
@@ -59,7 +59,7 @@ export default class Locations extends Component {
 	render() {
 		return (
 			<div id="locations">
-				{this.props.locations.map((loc) => { return <Location key={loc.id} {...loc} /> })}
+				{this.props.locations.map((loc) => <Location key={loc.id} {...loc} />)}
 			</div>
 		);
 	}
