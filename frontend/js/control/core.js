@@ -51,8 +51,8 @@ function locationsReducer(locations = [], action) {
 						[action.bin_no]: _arrayAdd({
 							name: action.name,
 							size: action.size,
-							timeCreated: (new Date()).valueOf(),
-							timeUpdated: (new Date()).valueOf(),
+							timeCreated: new Date(),
+							timeUpdated: new Date(),
 						}),
 					},
 				}
@@ -80,7 +80,7 @@ function locationsReducer(locations = [], action) {
 				[loc_index]: {
 					bins: {
 						[action.bin_no]: {
-							[action.index]: u(u({timeUpdated: (new Date()).valueOf()}, action.changes)),
+							[action.index]: u(u({timeUpdated: new Date()}, action.changes)),
 						},
 					},
 				}

@@ -66,7 +66,6 @@ export default class Locations extends Component {
 }
 
 function select(state) {
-	console.log('select', state);
 	// Only match case-insensitively if no uppercase letters in search
 	var searcher = new RegExp(state.filters.search, state.filters.search.match(/[A-Z]/) ? undefined : 'i');
 
