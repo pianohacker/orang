@@ -34,16 +34,18 @@ class _Location extends Component {
 			<div className="location">
 				<header>
 					<h1>{this.props.name}</h1>
-					<div>
-						<button onClick={() => dispatch(actions.createBin(this.props.id))}>Add Bin</button>
-					</div>
-					<div className="item-creators">
-						<i className="fa fa-plus"></i>
-						{[1, 4, 9, 16].map(
-							(size) => <button onClick={() => dispatch(actions.createItemFitted(this.props.id, size))}>
-								{common.SIZE_NAMES[size]}
-							</button>
-						)}
+					<div className="location-tools">
+						<div>
+							<button onClick={() => dispatch(actions.createBin(this.props.id))}>Add Bin</button>
+						</div>
+						<div className="item-creators">
+							<i className="fa fa-plus"></i>
+							{[1, 4, 9, 16].map(
+								(size) => <button onClick={() => dispatch(actions.createItemFitted(this.props.id, size))}>
+									{common.SIZE_NAMES[size]}
+								</button>
+							)}
+						</div>
 					</div>
 				</header>
 				<div className="bins">

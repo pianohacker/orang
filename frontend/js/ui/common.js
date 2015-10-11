@@ -4,15 +4,16 @@ import React, { Component } from 'react';
 export const SIZE_NAMES = {1: 'S', 4: 'M', 9: 'L', 16: 'X'};
 
 export class CycleOption extends Component {
-	onClick(pos) {
+	onClick(e, pos) {
 		this.props.onChange(this.props.choices[(pos + 1) % this.props.choices.length][0]);
+		e.preventDefault();
 	}
 
 	render() {
 		var pos = _.findIndex(this.props.choices, ([size, text]) => (size == this.props.value));
 
 		return (
-			<span className="cyclable" onClick={() => this.onClick(pos)}>{this.props.choices[pos][1]}</span>
+			<span className="cyclable" onClick={(e) => this.onClick(e, pos)}>{this.props.choices[pos][1]}</span>
 		)
 	}
 }

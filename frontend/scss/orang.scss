@@ -159,20 +159,26 @@ button {
 
 		h1 {
 			font-size: 1.776em;
+			margin-top: .563rem;
+			margin-bottom: .75rem;
 		}
 	}
 
 	.item-creators {
-		opacity: .178;
+		margin-top: .536em;
 		padding: 0;
-		transition: opacity .316s ease;
 
 		button {
 			margin-left: .422em;
 		}
 	}
 
-	&:hover .item-creators {
+	.location-tools {
+		opacity: .178;
+		transition: opacity .316s ease;
+	}
+
+	&:hover .location-tools {
 		opacity: 1;
 	}
 }
