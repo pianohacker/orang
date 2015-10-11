@@ -7,8 +7,12 @@ import * as actions from '../control/actions';
 class SearchBar extends Component {
 	render() {
 		return (
-			<input id="searchbar" type="search" onChange={(event) => {this.props.onSearchChanged(event.target.value)}}/>
+			<input ref="input" id="searchbar" type="search" onChange={(event) => {this.props.onSearchChanged(event.target.value)}}/>
 		);
+	}
+
+	componentDidMount() {
+		shortcut.add('f', () => React.findDOMNode(this.refs.input).focus(), {disable_in_input: true});
 	}
 }
 
