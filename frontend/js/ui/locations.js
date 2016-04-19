@@ -10,6 +10,9 @@ class _Bin extends Component {
 	render() {
 		const { dispatch } = this.props;
 
+		var sortedItems = [].concat(this.props.items);
+		sortedItems.sort((a, b) => a.name.localeCompare(b.name))
+
 		return (
 			<div className={"bin" + (this.props.items.length == 0 ? " empty" : "")}>
 				<header>
@@ -17,7 +20,7 @@ class _Bin extends Component {
 					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no, 1))}><i className="fa fa-plus"></i></button>
 				</header>
 				<ul className="items">
-					{this.props.items.map((item, i) => <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} />)}
+					{sortedItems.map((item, i) => <Item index={i} loc_id={this.props.loc_id} bin_no={this.props.bin_no} {...item} />)}
 				</ul>
 			</div>
 		);
@@ -75,7 +78,7 @@ function select(state) {
 		locations: u.map(
 			u({
 
-				bins: u.map(u.reject((item) => !item.name.match(searcher)))
+				bins: u.map(u.reject((item) => !(item.name || '').match(searcher)))
 			}),
 			state.locations
 		)

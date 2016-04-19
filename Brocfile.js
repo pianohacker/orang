@@ -12,6 +12,9 @@ js = browserify(js, {
 	browserify: {
 		paths: ['.'],
 	},
+	bundle: {
+		debug: true,
+	},
 });
 
 var fontAwesomeScss = funnel('node_modules/font-awesome/scss', {
