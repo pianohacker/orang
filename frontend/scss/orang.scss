@@ -58,18 +58,19 @@ body {
 
 	> header {
 		> h1 {
-			font-size: 1em;
+			font-size: 1.333rem;
 			font-weight: bold;
-			left: 0;
+			left: .316rem;
+			line-height: 2.368rem;
 			margin: 0;
 			padding: .316em;
 			position: absolute;
-			text-align: center;
 			top: 0;
 			width: 1.333em;
 		}
 
 		> button {
+			font-size: 1.333rem;
 			opacity: .178;
 			position: absolute;
 			right: 0;
@@ -80,6 +81,13 @@ body {
 
 	&:hover > header > button {
 		opacity: 1;
+	}
+
+	.items {
+		margin: 0;
+		padding-left: 1.776em;
+		padding-top: 2.368em;
+		padding-bottom: .75em;
 	}
 }
 
@@ -131,10 +139,6 @@ button {
 	&:hover > button {
 		opacity: 1;
 	}
-}
-
-.items {
-	padding-left: 1.776em;
 }
 
 .location {

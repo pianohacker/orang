@@ -16,7 +16,7 @@ class _Bin extends Component {
 		return (
 			<div className={"bin" + (this.props.items.length == 0 ? " empty" : "")}>
 				<header>
-					<h1>{this.props.bin_no}</h1>
+					<h1>{this.props.bin_no + 1}</h1>
 					<button title="Add item" onClick={() => dispatch(actions.createItem(this.props.loc_id, this.props.bin_no, 1))}><i className="fa fa-plus"></i></button>
 				</header>
 				<ul className="items">
