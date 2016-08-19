@@ -7,6 +7,8 @@
 	</head>
 	<body>
 		<script src="/lib/shortcut.js"></script>
+		<!-- polyfill for redux-persistent -->
+		<script>window.setImmediate = (func) => setTimeout(func, 0);</script>
 		<script src="/gen/bundle.js"></script>
 	</body>
 </html>

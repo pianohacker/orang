@@ -11,7 +11,7 @@ class _Bin extends Component {
 		const { dispatch } = this.props;
 
 		var sortedItems = [].concat(this.props.items);
-		sortedItems.sort((a, b) => a.name.localeCompare(b.name))
+		//sortedItems.sort((a, b) => a.name.localeCompare(b.name))
 
 		return (
 			<div className={"bin" + (this.props.items.length == 0 ? " empty" : "")}>

@@ -5,6 +5,10 @@
 
 @import "font-awesome/font-awesome";
 
+* {
+	box-sizing: border-box;
+}
+
 #app > header {
 	display: flex;
 	flex-direction: row;
@@ -36,45 +40,56 @@ body, html {
 
 body {
 	background: #ABC8F4 -moz-linear-gradient(center top, #ABC8F4 0%, #D9E8FF 100%) no-repeat 0 0;
+	background-attachment: fixed;
 	min-height: 100vh;
 }
 
 .bin {
-	background-color: #EEE;
-	background-color: rgba(255, 255, 255, .75);
-	display: inline-block;
-	padding: .422em;
+	$bg: #ECF3FD;
+	background-color: $bg;
+	border: 3px solid darken($bg, 16%);
+	display: inline-flex;
+	padding: 0;
+	padding-left: .422em;
 	margin-left: .563em;
 	margin-top: .563em;
 	min-height: 1.633em;
-	position: relative;
 	transition: opacity .316s ease;
 	vertical-align: top;
-	width: 17.713em;
+	width: 23.611em;
 
 	&.empty {
 		opacity: .563;
+
+		.items {
+			height: auto;
+		}
 	}
 
 	> header {
+		display: flex;
+		flex: 0 0 1.333em;
+		flex-direction: column;
+		padding: .316em 0;
+
 		> h1 {
+			flex-grow: 1;
 			font-size: 1.333rem;
 			font-weight: bold;
-			left: .316rem;
 			line-height: 2.368rem;
 			margin: 0;
-			padding: .316em;
-			position: absolute;
+			padding: {
+				bottom: .316em;
+				left: .316em;
+			}
 			top: 0;
-			width: 1.333em;
+			width: 1.766em;
 		}
 
 		> button {
+			flex-grow: 0;
 			font-size: 1.333rem;
 			opacity: .178;
-			position: absolute;
-			right: 0;
-			top: 0;
 			transition: opacity .316s ease;
 		}
 	}
@@ -84,10 +99,37 @@ body {
 	}
 
 	.items {
+		height: 9.968em;
 		margin: 0;
-		padding-left: 1.776em;
-		padding-top: 2.368em;
-		padding-bottom: .75em;
+		padding-left: .75em;
+		padding-right: .75em;
+		padding-top: .75em;
+		padding-bottom: 1.776em;
+
+		// Overflow shadows, from http://lea.verou.me/2012/04/background-attachment-local/
+		overflow: hidden;
+
+		background:
+			/* Shadow covers */
+			linear-gradient($bg 30%, rgba($bg, 0)),
+			linear-gradient(rgba($bg, 0), $bg 70%) 0 100%,
+
+			/* Shadows */
+			radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+			radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+		background:
+			/* Shadow covers */
+			linear-gradient($bg 30%, rgba($bg, 0)),
+			linear-gradient(rgba($bg, 0), $bg 70%) 0 100%,
+
+			/* Shadows */
+			radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+			radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+		background-repeat: no-repeat;
+		background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+		/* Opera doesn't support this in the shorthand */
+		background-attachment: local, local, scroll, scroll;
 	}
 }
 

@@ -22,6 +22,12 @@ function filtersReducer(filters = DEFAULT_FILTERS, action) {
 	}
 }
 
+function isModifiedReducer(isModified = false, action) {
+	if (action.type == 'save') return false;
+
+	return action.isModification ? true : isModified;
+}
+
 function locationsReducer(locations = [], action) {
 	console.debug('Action:', action);
 	var loc_index = _.findIndex(locations, (location) => location.id == action.loc_id);
@@ -72,8 +78,11 @@ function locationsReducer(locations = [], action) {
 				}
 			}, locations);
 
+		case 'load':
+			return action.locations;
+
 		case REHYDRATE:
-			return action.key == 'locations' ? action.payload : locations;
+			return action.payload.locations || locations;
 
 		case 'updateItem':
 			return u({
@@ -92,6 +101,7 @@ function locationsReducer(locations = [], action) {
 
 const coreReducer = redux.combineReducers({
 	filters: filtersReducer,
+	isModified: isModifiedReducer,
 	locations: locationsReducer,
 });
 
