@@ -60,7 +60,7 @@ class _Location extends Component {
 }
 const Location = connect()(_Location);
 
-export default class Locations extends Component {
+class Locations extends Component {
 	render() {
 		return (
 			<div id="locations">

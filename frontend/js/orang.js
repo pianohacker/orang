@@ -1,4 +1,8 @@
+import '../scss/orang.scss';
+import 'font-awesome-sass-loader';
+
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import * as actions from './control/actions';
@@ -16,9 +20,9 @@ store.subscribe(() => {
 	store.dispatch(actions.save());
 });
 
-React.render(
+ReactDOM.render(
 	<Provider store={store}>
-		{() => <App />}
+		<App />
 	</Provider>,
 	document.body
 );

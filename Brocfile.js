@@ -1,19 +1,18 @@
-var babel = require('broccoli-babel-transpiler');
-var browserify = require('broccoli-browserify');
+var watchify = require('broccoli-watchify');
 var funnel = require('broccoli-funnel');
 var mergeTrees = require('broccoli-merge-trees');
 var sass = require('broccoli-sass');
 
 var js = './frontend/js';
-js = babel(js, {});
-js = browserify(js, {
-	entries: ['./orang'],
-	outputFile: '/gen/bundle.js',
+js = watchify(js, {
 	browserify: {
-		paths: ['.'],
-	},
-	bundle: {
 		debug: true,
+		entries: ['./orang'],
+	},
+	outputFile: '/gen/bundle.js',
+	cache: true,
+	init: (b) => {
+		b.transform('babelify', {presets: ["es2015", "react"]})
 	},
 });
 
