@@ -13,7 +13,16 @@ export class CycleOption extends Component {
 		var pos = _.findIndex(this.props.choices, ([size, text]) => (size == this.props.value));
 
 		return (
-			<span className="cyclable" onClick={(e) => this.onClick(e, pos)}>{this.props.choices[pos][1]}</span>
+			<span
+				className="cyclable"
+				style={this.props.fixedWidth ? {
+					display: 'inline-block',
+					textAlign: 'center',
+					width: this.props.fixedWidth
+				} : null}
+				onClick={(e) => this.onClick(e, pos)}>
+					{this.props.choices[pos][1]}
+			</span>
 		)
 	}
 }
