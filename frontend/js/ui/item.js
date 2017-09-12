@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -9,8 +10,11 @@ class Item extends Component {
 	render() {
 		const { dispatch } = this.props;
 
+		const updated = moment(this.props.timeUpdated, moment.ISO_8601);
+		const highlight = moment().diff(updated, 'seconds') < 5;
+
 		return (
-			<li className="item">
+			<li className={"item" + (highlight ? " highlight" : "")}>
 				{"("}<common.CycleOption
 					fixedWidth="1em"
 					onChange={(value) => dispatch(actions.updateItem(this.props.loc_id, this.props.bin_no, this.props.index, {size: value}))}

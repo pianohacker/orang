@@ -43,9 +43,9 @@ function locationsReducer(locations = [], action) {
 		case 'createItemFitted':
 			// Randomly choose one of the emptiest bins
 			var [emptiest_bin, ] = _(locations[loc_index].bins)
-				.map((bin, i) => [i, _.sum(bin, (item) => (item.size || 1))])
+				.map((bin, i) => [i, _.sumBy(bin, (item) => parseInt(item.size || 1))])
 				.shuffle()
-				.min(1);
+				.minBy(1);
 
 			action = u({bin_no: emptiest_bin}, action);
 
