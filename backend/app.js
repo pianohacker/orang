@@ -27,7 +27,7 @@ db.serialize(() => {
 
 app.get('/api/v1/data', (req, res) => {
 	db.get('SELECT data FROM user_data', (err, row) => {
-		res.json({data: JSON.parse(row.data)});
+		res.json({data: row ? JSON.parse(row.data) : null});
 	});
 });
 

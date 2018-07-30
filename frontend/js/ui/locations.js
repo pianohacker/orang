@@ -52,7 +52,7 @@ class _Location extends Component {
 					</div>
 				</header>
 				<div className="bins">
-					{this.props.bins.map((bin, i) => <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} />)}
+					{(this.props.bins || []).map((bin, i) => <Bin loc_id={this.props.id} bin_no={i} key={i} items={bin} />)}
 				</div>
 			</div>
 		);
