@@ -65,7 +65,7 @@ function locationsReducer(locations = [], action) {
 			}, locations);
 
 		case 'createLocation':
-			var id = _.max(locations, (location) => location.id) + 1;
+			var id = _(locations).map((location) => location.id).max() + 1;
 
 			return u(_arrayAdd({id: id, name: action.name, bins: [[]]}), locations);
 
