@@ -1,0 +1,15 @@
+{
+	"background_color": "#ABC8F4",
+	"description": "Physical stuff organizer",
+	"display": "standalone",
+	"icons": [
+		{
+			"src": "/images/icon.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"name": "Orang",
+	"short_name": "Orang",
+	"start_url": "/"
+}

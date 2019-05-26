@@ -13,12 +13,12 @@ import fetch_polyfill from 'fetch-ie8';
 const fetch = window.fetch || fetch_polyfill;
 
 const store = createOurStore();
-store.dispatch(actions.load());
-store.subscribe(() => {
-	var state = store.getState();
-	if (!state.isModified) return false;
-	store.dispatch(actions.save());
-});
+store.dispatch( actions.load() );
+store.subscribe( () => {
+	let state = store.getState();
+	if ( !state.isModified ) return false;
+	store.dispatch( actions.save() );
+} );
 
 ReactDOM.render(
 	<Provider store={store}>

@@ -10,25 +10,25 @@ class Item extends Component {
 	render() {
 		const { dispatch } = this.props;
 
-		const updated = moment(this.props.timeUpdated, moment.ISO_8601);
-		const highlight = moment().diff(updated, 'seconds') < 5;
+		const updated = moment( this.props.timeUpdated, moment.ISO_8601 );
+		const highlight = moment().diff( updated, 'seconds' ) < 5;
 
 		return (
-			<li className={"item" + (highlight ? " highlight" : "")}>
-				{"("}<common.CycleOption
+			<li className={'item' + ( highlight ? ' highlight' : '' )}>
+				{'('}<common.CycleOption
 					fixedWidth="1em"
-					onChange={(value) => dispatch(actions.updateItem(this.props.loc_id, this.props.bin_no, this.props.index, {size: value}))}
+					onChange={( value ) => dispatch( actions.updateItem( this.props.loc_id, this.props.bin_no, this.props.index, {size: value} ) )}
 					value={this.props.size || 1}
-					choices={_(common.SIZE_NAMES).toPairs().sortBy(([size, text]) => parseInt(size)).value()}
-				/>{") "}
+					choices={_( common.SIZE_NAMES ).toPairs().sortBy( ( [ size, text ] ) => parseInt( size ) ).value()}
+				/>{') '}
 				<common.EditableText
-					onChange={(value) => dispatch(actions.updateItem(this.props.loc_id, this.props.bin_no, this.props.index, {name: value}))}
+					onChange={( value ) => dispatch( actions.updateItem( this.props.loc_id, this.props.bin_no, this.props.index, {name: value} ) )}
 					text={this.props.name}
 				/>
-				<button title="Delete item" onClick={() => dispatch(actions.deleteItem(this.props.loc_id, this.props.bin_no, this.props.index))}>-</button>
+				<button title="Delete item" onClick={() => dispatch( actions.deleteItem( this.props.loc_id, this.props.bin_no, this.props.index ) )}>-</button>
 			</li>
 		)
 	}
 }
 
-export default connect()(Item);
+export default connect()( Item );

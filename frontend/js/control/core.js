@@ -9,74 +9,74 @@ const DEFAULT_FILTERS = {
 	search: '',
 };
 
-function _arrayAdd(val) {
-	return (arr) => [].concat(arr, [val]);
+function _arrayAdd( val ) {
+	return ( arr ) => [].concat( arr, [ val ] );
 }
 
-function filtersReducer(filters = DEFAULT_FILTERS, action) {
-	switch (action.type) {
+function filtersReducer( filters = DEFAULT_FILTERS, action ) {
+	switch ( action.type ) {
 		case 'setSearch':
-			return u({ search: action.search }, filters);
+			return u( { search: action.search }, filters );
 
 		default: return filters;
 	}
 }
 
-function isModifiedReducer(isModified = false, action) {
-	if (action.type == 'save') return false;
+function isModifiedReducer( isModified = false, action ) {
+	if ( action.type == 'save' ) return false;
 
 	return action.isModification ? true : isModified;
 }
 
-function locationsReducer(locations = [], action) {
-	console.debug('Action:', action);
-	var loc_index = _.findIndex(locations, (location) => location.id == action.loc_id);
+function locationsReducer( locations = [], action ) {
+	let loc_index = _.findIndex( locations, ( location ) => location.id == action.loc_id );
 
-	switch (action.type) {
+	switch ( action.type ) {
 		case 'createBin':
-			return u({
-				[loc_index]: {
-					bins: _arrayAdd([]),
-				}
-			}, locations);
+			return u( {
+				[ loc_index ]: {
+					bins: _arrayAdd( [] ),
+				},
+			}, locations );
 
 		case 'createItemFitted':
 			// Randomly choose one of the emptiest bins
-			var [emptiest_bin, ] = _(locations[loc_index].bins)
-				.map((bin, i) => [i, _.sumBy(bin, (item) => parseInt(item.size || 1))])
+			let [ emptiest_bin ] = _( locations[ loc_index ].bins )
+				.map( ( bin, i ) => [ i, _.sumBy( bin, ( item ) => parseInt( item.size || 1 ) ) ] )
 				.shuffle()
-				.minBy(1);
+				.minBy( 1 );
 
-			action = u({bin_no: emptiest_bin}, action);
+			action = u( {bin_no: emptiest_bin}, action );
 
 			// fallthrough
 		case 'createItem':
-			return u({
-				[loc_index]: {
+			return u( {
+				[ loc_index ]: {
 					bins: {
-						[action.bin_no]: _arrayAdd({
+						[ action.bin_no ]: _arrayAdd( {
 							name: action.name,
 							size: action.size,
 							timeCreated: new Date(),
 							timeUpdated: new Date(),
-						}),
+						} ),
 					},
-				}
-			}, locations);
+				},
+			}, locations );
 
 		case 'createLocation':
 			var id = _(locations).map((location) => location.id).max() + 1;
 
-			return u(_arrayAdd({id: id, name: action.name, bins: [[]]}), locations);
+			return u( _arrayAdd( {id, name: action.name, bins: [ [] ]} ), locations );
 
 		case 'deleteItem':
-			return u({
-				[loc_index]: {
+			return u( {
+				[ loc_index ]: {
 					bins: {
-						[action.bin_no]: (arr) => [].concat(arr.slice(0, action.index), arr.slice(action.index + 1)),
+						[ action.bin_no ]: ( arr ) =>
+							[].concat( arr.slice( 0, action.index ), arr.slice( action.index + 1 ) ),
 					},
-				}
-			}, locations);
+				},
+			}, locations );
 
 		case 'load':
 			return action.locations;
@@ -85,32 +85,32 @@ function locationsReducer(locations = [], action) {
 			return action.payload.locations || locations;
 
 		case 'updateItem':
-			return u({
-				[loc_index]: {
+			return u( {
+				[ loc_index ]: {
 					bins: {
-						[action.bin_no]: {
-							[action.index]: u(u({timeUpdated: new Date()}, action.changes)),
+						[ action.bin_no ]: {
+							[ action.index ]: u( u( {timeUpdated: new Date()}, action.changes ) ),
 						},
 					},
-				}
-			}, locations);
+				},
+			}, locations );
 
 		default: return locations;
 	}
 }
 
-const coreReducer = redux.combineReducers({
+const coreReducer = redux.combineReducers( {
 	filters: filtersReducer,
 	isModified: isModifiedReducer,
 	locations: locationsReducer,
-});
+} );
 
 export function createOurStore() {
-	var creator = redux.applyMiddleware(thunkMiddleware)(redux.createStore);
+	let creator = redux.applyMiddleware( thunkMiddleware )( redux.createStore );
 	// We do not use autoRehydrate because array keys are transformed to objects
 	// (https://github.com/rt2zz/redux-persist/issues/16)
-	var store = creator(coreReducer);
-	persistStore(store, {blacklist: ['filters']});
+	let store = creator( coreReducer );
+	persistStore( store, {blacklist: [ 'filters' ]} );
 
 	return store;
 }
