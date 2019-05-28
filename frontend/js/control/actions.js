@@ -51,11 +51,17 @@ export const createItem = _modAction(
 
 export const createItemFitted = _modAction( 'createItemFitted', 'loc_id', 'size', ( action ) => ( dispatch, getState ) => {
 	let state = getState();
-	let denormalizedLocations = denormalize( state.locations, schema.location, state );
+	let denormalizedLocation = denormalize(
+		state.locations[ action.loc_id ],
+		schema.location,
+		state,
+	);
 
 	// Randomly choose one of the emptiest bins
-	let [ emptiest_bin ] = _( denormalizedLocations[ action.loc_id ].bins )
-		.map( bin => [ bin.id, _.sumBy( bin, ( item ) => parseInt( item.size || 1 ) ) ] )
+	window._ = _;
+	window.d = denormalizedLocation;
+	let [ emptiest_bin ] = _( denormalizedLocation.bins )
+		.map( bin => [ bin.id, _.sumBy( bin.items, ( item ) => parseInt( item.size || 1 ) ) ] )
 		.shuffle()
 		.minBy( 1 );
 

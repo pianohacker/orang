@@ -1,6 +1,7 @@
 import immer from 'immer';
 import _ from 'lodash';
 import * as redux from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import thunkMiddleware from 'redux-thunk';
@@ -129,7 +130,9 @@ const persistedReducer = persistReducer(
 );
 
 export function createOurStore() {
-	let creator = redux.applyMiddleware( thunkMiddleware )( redux.createStore );
+	let creator = composeWithDevTools(
+		redux.applyMiddleware( thunkMiddleware )
+	)( redux.createStore );
 	let store = creator( persistedReducer );
 	persistStore( store );
 
