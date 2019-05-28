@@ -1,12 +1,10 @@
 import _ from 'lodash';
-import { denormalize, normalize } from 'normalizr';
 import * as redux from 'redux';
-import { createMigrate, persistReducer, persistStore } from 'redux-persist'
+import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import thunkMiddleware from 'redux-thunk';
 import u from 'updeep';
 
-import * as schema from './schema';
 import { migrate, MIGRATE_VERSION } from './migrate';
 
 const DEFAULT_FILTERS = {
@@ -32,7 +30,7 @@ function isModifiedReducer( isModified = false, action ) {
 	return action.isModification ? true : isModified;
 }
 
-function locationsReducer( locations = [], action ) {
+function locationsReducer( locations = {}, action ) {
 	let loc_index = _.findIndex( locations, ( location ) => location.id == action.loc_id );
 
 	switch ( action.type ) {
@@ -100,10 +98,32 @@ function locationsReducer( locations = [], action ) {
 	}
 }
 
+function binsReducer( bins = {}, action ) {
+	switch ( action.type ) {
+		case 'load':
+			return action.bins;
+
+		default:
+			return bins;
+	}
+}
+
+function itemsReducer( items = {}, action ) {
+	switch ( action.type ) {
+		case 'load':
+			return action.items;
+
+		default:
+			return items;
+	}
+}
+
 const coreReducer = redux.combineReducers( {
 	filters: filtersReducer,
 	isModified: isModifiedReducer,
 	locations: locationsReducer,
+	bins: binsReducer,
+	items: itemsReducer,
 } );
 
 const persistedReducer = persistReducer(

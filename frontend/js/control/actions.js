@@ -24,7 +24,7 @@ function _modAction( name, ...fields ) {
 	if ( typeof ( fields[ fields.length - 1 ] ) == 'function' ) postCreate = fields.pop();
 
 	return _action( name, ...fields, ( action ) => {
-		return postCreate( u( {isModification: true}, action ) );
+		return postCreate( u( { isModification: true }, action ) );
 	} );
 };
 
@@ -39,7 +39,7 @@ export const createLocation = _modAction( 'createLocation', ( action ) => ( disp
 	dispatch( u( {name: prompt( 'Name of location:' )}, action ) );
 } );
 export const deleteItem = _modAction( 'deleteItem', 'loc_id', 'bin_no', 'index' );
-export const exportData = _action( 'exportData', ( action ) => ( dispatch, getState ) => {
+export const exportData = _action( 'exportData', () => ( dispatch, getState ) => {
 	saveAs( new Blob( [ JSON.stringify( getState() ) ], {type: 'application/json;charset=utf-8'} ), 'orang.json' );
 } );
 
@@ -47,30 +47,30 @@ export const load = _action( 'load', ( action ) => async dispatch => {
 	let response = await fetch( '/api/v1/data' );
 	let json = await response.json();
 
-	let { locations } = await migrate( json.data, MIGRATE_VERSION );
+	let state = await migrate( json.data, MIGRATE_VERSION );
 
-	return dispatch( u( { locations }, action ) );
+	return dispatch( u( state, action ) );
 } );
 
-export const save = _action( 'save', ( action ) => ( dispatch, getState ) => {
+export const save = _action( 'save', ( action ) => async ( dispatch, getState ) => {
 	dispatch( action );
-	let state = getState();
+	let { locations, bins, items } = getState();
 
-	fetch( '/api/v1/data', {
+	await fetch( '/api/v1/data', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify( {data: state.locations} ),
-	} ).then(
-		() => {
-			return;
-		},
-		() => {
-			alert( 'save failed' );
-		}
-	);
+		body: JSON.stringify( {
+			data: {
+				locations, bins, items,
+				_persist: { version: MIGRATE_VERSION },
+			},
+		} ),
+	} );
 } );
+
 export const setSearch = _action( 'setSearch', 'search' );
+
 export const updateItem = _modAction( 'updateItem', 'loc_id', 'bin_no', 'index', 'changes' );
