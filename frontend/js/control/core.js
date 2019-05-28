@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as redux from 'redux';
-import { persistStore } from 'redux-persist'
-import { REHYDRATE } from 'redux-persist/constants'
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage';
 import thunkMiddleware from 'redux-thunk';
 import u from 'updeep';
 
@@ -81,9 +81,6 @@ function locationsReducer( locations = [], action ) {
 		case 'load':
 			return action.locations;
 
-		case REHYDRATE:
-			return action.payload.locations || locations;
-
 		case 'updateItem':
 			return u( {
 				[ loc_index ]: {
@@ -105,12 +102,21 @@ const coreReducer = redux.combineReducers( {
 	locations: locationsReducer,
 } );
 
+const persistedReducer = persistReducer(
+	{
+		key: 'root',
+		storage,
+		whitelist: [ 'locations' ],
+	},
+	coreReducer,
+);
+
 export function createOurStore() {
 	let creator = redux.applyMiddleware( thunkMiddleware )( redux.createStore );
 	// We do not use autoRehydrate because array keys are transformed to objects
 	// (https://github.com/rt2zz/redux-persist/issues/16)
-	let store = creator( coreReducer );
-	persistStore( store, {blacklist: [ 'filters' ]} );
+	let store = creator( persistedReducer );
+	persistStore( store );
 
 	return store;
 }

@@ -10,7 +10,7 @@ import { createOurStore } from './control/core';
 import App from './ui/app';
 
 import fetch_polyfill from 'fetch-ie8';
-const fetch = window.fetch || fetch_polyfill;
+window.fetch = window.fetch || fetch_polyfill;
 
 const store = createOurStore();
 store.dispatch( actions.load() );
@@ -24,5 +24,5 @@ ReactDOM.render(
 	<Provider store={store}>
 		<App />
 	</Provider>,
-	document.body
+	document.getElementById( 'react-root' ),
 );
