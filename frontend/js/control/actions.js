@@ -58,8 +58,6 @@ export const createItemFitted = _modAction( 'createItemFitted', 'loc_id', 'size'
 	);
 
 	// Randomly choose one of the emptiest bins
-	window._ = _;
-	window.d = denormalizedLocation;
 	let [ emptiest_bin ] = _( denormalizedLocation.bins )
 		.map( bin => [ bin.id, _.sumBy( bin.items, ( item ) => parseInt( item.size || 1 ) ) ] )
 		.shuffle()
