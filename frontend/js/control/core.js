@@ -1,9 +1,13 @@
 import _ from 'lodash';
+import { denormalize, normalize } from 'normalizr';
 import * as redux from 'redux';
-import { persistReducer, persistStore } from 'redux-persist'
+import { createMigrate, persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage';
 import thunkMiddleware from 'redux-thunk';
 import u from 'updeep';
+
+import * as schema from './schema';
+import { migrate, MIGRATE_VERSION } from './migrate';
 
 const DEFAULT_FILTERS = {
 	search: '',
@@ -64,7 +68,7 @@ function locationsReducer( locations = [], action ) {
 			}, locations );
 
 		case 'createLocation':
-			var id = _(locations).map((location) => location.id).max() + 1;
+			let id = _(locations).map((location) => location.id).max() + 1;
 
 			return u( _arrayAdd( {id, name: action.name, bins: [ [] ]} ), locations );
 
@@ -107,14 +111,15 @@ const persistedReducer = persistReducer(
 		key: 'root',
 		storage,
 		whitelist: [ 'locations' ],
+
+		migrate,
+		version: MIGRATE_VERSION,
 	},
 	coreReducer,
 );
 
 export function createOurStore() {
 	let creator = redux.applyMiddleware( thunkMiddleware )( redux.createStore );
-	// We do not use autoRehydrate because array keys are transformed to objects
-	// (https://github.com/rt2zz/redux-persist/issues/16)
 	let store = creator( persistedReducer );
 	persistStore( store );
 

@@ -5,6 +5,8 @@ import u from 'updeep';
 import fetch_polyfill from 'fetch-ie8';
 const fetch = window.fetch || fetch_polyfill;
 
+import { migrate, MIGRATE_VERSION } from './migrate';
+
 function _action( name, ...fields ) {
 	let postCreate = ( action ) => action;
 	if ( typeof ( fields[ fields.length - 1 ] ) == 'function' ) postCreate = fields.pop();
@@ -40,11 +42,16 @@ export const deleteItem = _modAction( 'deleteItem', 'loc_id', 'bin_no', 'index' 
 export const exportData = _action( 'exportData', ( action ) => ( dispatch, getState ) => {
 	saveAs( new Blob( [ JSON.stringify( getState() ) ], {type: 'application/json;charset=utf-8'} ), 'orang.json' );
 } );
-export const load = _action( 'load', ( action ) => ( dispatch, getState ) => {
-	fetch( '/api/v1/data' ).then( ( response ) => response.json() ).then( ( json ) => {
-		dispatch( u( {locations: json.data}, action ) );
-	} );
+
+export const load = _action( 'load', ( action ) => async dispatch => {
+	let response = await fetch( '/api/v1/data' );
+	let json = await response.json();
+
+	let { locations } = await migrate( json.data, MIGRATE_VERSION );
+
+	return dispatch( u( { locations }, action ) );
 } );
+
 export const save = _action( 'save', ( action ) => ( dispatch, getState ) => {
 	dispatch( action );
 	let state = getState();
