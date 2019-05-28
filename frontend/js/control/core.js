@@ -1,3 +1,4 @@
+import immer from 'immer';
 import _ from 'lodash';
 import * as redux from 'redux';
 import { persistReducer, persistStore } from 'redux-persist'
@@ -31,37 +32,13 @@ function isModifiedReducer( isModified = false, action ) {
 }
 
 function locationsReducer( locations = {}, action ) {
-	let loc_index = _.findIndex( locations, ( location ) => location.id == action.loc_id );
+	let location = locations[action.loc_id];
 
 	switch ( action.type ) {
 		case 'createBin':
 			return u( {
 				[ loc_index ]: {
 					bins: _arrayAdd( [] ),
-				},
-			}, locations );
-
-		case 'createItemFitted':
-			// Randomly choose one of the emptiest bins
-			let [ emptiest_bin ] = _( locations[ loc_index ].bins )
-				.map( ( bin, i ) => [ i, _.sumBy( bin, ( item ) => parseInt( item.size || 1 ) ) ] )
-				.shuffle()
-				.minBy( 1 );
-
-			action = u( {bin_no: emptiest_bin}, action );
-
-			// fallthrough
-		case 'createItem':
-			return u( {
-				[ loc_index ]: {
-					bins: {
-						[ action.bin_no ]: _arrayAdd( {
-							name: action.name,
-							size: action.size,
-							timeCreated: new Date(),
-							timeUpdated: new Date(),
-						} ),
-					},
 				},
 			}, locations );
 
@@ -99,23 +76,36 @@ function locationsReducer( locations = {}, action ) {
 }
 
 function binsReducer( bins = {}, action ) {
-	switch ( action.type ) {
-		case 'load':
-			return action.bins;
+	return immer( bins, draft => {
+		switch ( action.type ) {
+			case 'createItemFitted':
+			case 'createItem':
+				draft[ action.bin_id ].items.push( action.item_id );
+				break;
 
-		default:
-			return bins;
-	}
+			case 'load':
+				return action.bins;
+		}
+	} );
 }
 
 function itemsReducer( items = {}, action ) {
-	switch ( action.type ) {
-		case 'load':
-			return action.items;
+	return immer( items, draft => {
+		switch ( action.type ) {
+			case 'createItemFitted':
+			case 'createItem':
+				draft[ action.item_id ] = {
+					name: action.name,
+					size: action.size,
+					timeCreated: new Date(),
+					timeUpdated: new Date(),
+				};
+				break;
 
-		default:
-			return items;
-	}
+			case 'load':
+				return action.items;
+		}
+	} );
 }
 
 const coreReducer = redux.combineReducers( {

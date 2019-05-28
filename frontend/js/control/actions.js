@@ -1,10 +1,12 @@
 import { saveAs } from 'browser-filesaver/FileSaver';
 import _ from 'lodash';
+import { denormalize } from 'normalizr';
 import u from 'updeep';
 
 import fetch_polyfill from 'fetch-ie8';
 const fetch = window.fetch || fetch_polyfill;
 
+import * as schema from './schema';
 import { migrate, MIGRATE_VERSION } from './migrate';
 
 function _action( name, ...fields ) {
@@ -28,13 +30,42 @@ function _modAction( name, ...fields ) {
 	} );
 };
 
+function _nextId( collection ) {
+	return parseInt( _( collection ).keys().max() ) + 1;
+}
+
 export const createBin = _modAction( 'createBin', 'loc_id' );
-export const createItem = _modAction( 'createItem', 'loc_id', 'bin_no', 'size', ( action ) => ( dispatch, getState ) => {
-	dispatch( u( {name: prompt( 'Name of item:' )}, action ) );
-} );
+
+export const createItem = _modAction(
+	'createItem',
+	'loc_id',
+	'bin_id',
+	'size',
+	( action ) => ( dispatch, getState ) => {
+		dispatch( u( {
+			item_id: _nextId( getState().items ),
+			name: prompt( 'Name of item:' ),
+		}, action ) );
+	},
+);
+
 export const createItemFitted = _modAction( 'createItemFitted', 'loc_id', 'size', ( action ) => ( dispatch, getState ) => {
-	dispatch( u( {name: prompt( 'Name of item:' )}, action ) );
+	let state = getState();
+	let denormalizedLocations = denormalize( state.locations, schema.location, state );
+
+	// Randomly choose one of the emptiest bins
+	let [ emptiest_bin ] = _( denormalizedLocations[ action.loc_id ].bins )
+		.map( bin => [ bin.id, _.sumBy( bin, ( item ) => parseInt( item.size || 1 ) ) ] )
+		.shuffle()
+		.minBy( 1 );
+
+	dispatch( u( {
+		item_id: _nextId( state.items ),
+		name: prompt( 'Name of item:' ),
+		bin_id: emptiest_bin,
+	}, action ) );
 } );
+
 export const createLocation = _modAction( 'createLocation', ( action ) => ( dispatch, getState ) => {
 	dispatch( u( {name: prompt( 'Name of location:' )}, action ) );
 } );
@@ -73,4 +104,4 @@ export const save = _action( 'save', ( action ) => async ( dispatch, getState ) 
 
 export const setSearch = _action( 'setSearch', 'search' );
 
-export const updateItem = _modAction( 'updateItem', 'loc_id', 'bin_no', 'index', 'changes' );
+export const updateItem = _modAction( 'updateItem', 'loc_id', 'bin_no', 'index', 'changes');
