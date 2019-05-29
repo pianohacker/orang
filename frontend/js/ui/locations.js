@@ -36,7 +36,6 @@ class _Location extends Component {
 	render() {
 		const { dispatch } = this.props;
 
-		// <button title="Add bin" onClick={() => dispatch(actions.createBin(this.props.id))}>+</button>
 		return (
 			<div className="location">
 				<header>

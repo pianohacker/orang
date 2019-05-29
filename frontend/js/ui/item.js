@@ -17,15 +17,20 @@ class Item extends Component {
 			<li className={'item' + ( highlight ? ' highlight' : '' )}>
 				{'('}<common.CycleOption
 					fixedWidth="1em"
-					onChange={( value ) => dispatch( actions.updateItem( this.props.loc_id, this.props.bin_no, this.props.index, {size: value} ) )}
+					onChange={( value ) => dispatch( actions.updateItem( this.props.id, {size: value} ) )}
 					value={this.props.size || 1}
-					choices={_( common.SIZE_NAMES ).toPairs().sortBy( ( [ size, text ] ) => parseInt( size ) ).value()}
+					choices={_( common.SIZE_NAMES ).toPairs().sortBy( ( [ size, _text ] ) => parseInt( size ) ).value()}
 				/>{') '}
 				<common.EditableText
-					onChange={( value ) => dispatch( actions.updateItem( this.props.loc_id, this.props.bin_no, this.props.index, {name: value} ) )}
+					onChange={( value ) => dispatch( actions.updateItem( this.props.id, {name: value} ) )}
 					text={this.props.name}
 				/>
-				<button title="Delete item" onClick={() => dispatch( actions.deleteItem( this.props.loc_id, this.props.bin_no, this.props.index ) )}>-</button>
+				<button
+					title="Delete item"
+					onClick={() => dispatch( actions.deleteItem( this.props.bin_id, this.props.id ) )}
+				>
+					-
+				</button>
 			</li>
 		)
 	}

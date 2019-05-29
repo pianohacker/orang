@@ -33,55 +33,54 @@ function isModifiedReducer( isModified = false, action ) {
 }
 
 function locationsReducer( locations = {}, action ) {
-	let location = locations[action.loc_id];
+	return immer( locations, draft => {
+		let location = draft[ action.loc_id ];
 
-	switch ( action.type ) {
-		case 'createBin':
-			return u( {
-				[ loc_index ]: {
-					bins: _arrayAdd( [] ),
-				},
-			}, locations );
+		switch ( action.type ) {
+			case 'createLocation':
+				draft.push( {
+					id: action.loc_id,
+					name: action.name,
+					bins: [ [] ],
+				} );
+				break;
 
-		case 'createLocation':
-			let id = _(locations).map((location) => location.id).max() + 1;
+			case 'createBin':
+				location.bins.push( action.bin_id );
+				break;
 
-			return u( _arrayAdd( {id, name: action.name, bins: [ [] ]} ), locations );
+			case 'load':
+				return action.locations;
 
-		case 'deleteItem':
-			return u( {
-				[ loc_index ]: {
-					bins: {
-						[ action.bin_no ]: ( arr ) =>
-							[].concat( arr.slice( 0, action.index ), arr.slice( action.index + 1 ) ),
-					},
-				},
-			}, locations );
-
-		case 'load':
-			return action.locations;
-
-		case 'updateItem':
-			return u( {
-				[ loc_index ]: {
-					bins: {
-						[ action.bin_no ]: {
-							[ action.index ]: u( u( {timeUpdated: new Date()}, action.changes ) ),
-						},
-					},
-				},
-			}, locations );
-
-		default: return locations;
-	}
+			default: return locations;
+		}
+	} );
 }
 
 function binsReducer( bins = {}, action ) {
 	return immer( bins, draft => {
+		let bin = draft[ action.bin_id ];
+
 		switch ( action.type ) {
+			case 'createBin':
+				draft[ action.bin_id ] = {
+					id: action.bin_id,
+					items: [],
+				};
+				break;
+
 			case 'createItemFitted':
 			case 'createItem':
-				draft[ action.bin_id ].items.push( action.item_id );
+				bin.items.push( action.item_id );
+				break;
+
+			case 'deleteItem':
+				let itemIndex = bin.items.indexOf( action.item_id );
+
+				if ( itemIndex != -1 ) {
+					bin.items.splice( itemIndex, 1 );
+				}
+
 				break;
 
 			case 'load':
@@ -92,6 +91,8 @@ function binsReducer( bins = {}, action ) {
 
 function itemsReducer( items = {}, action ) {
 	return immer( items, draft => {
+		let item = draft[ action.item_id ];
+
 		switch ( action.type ) {
 			case 'createItemFitted':
 			case 'createItem':
@@ -101,6 +102,17 @@ function itemsReducer( items = {}, action ) {
 					timeCreated: new Date(),
 					timeUpdated: new Date(),
 				};
+				break;
+
+			case 'deleteItem':
+				delete draft[ action.item_id ];
+				break;
+
+			case 'updateItem':
+				draft[ action.item_id ] = u(
+					u( {timeUpdated: new Date()}, action.changes ),
+					item,
+				);
 				break;
 
 			case 'load':

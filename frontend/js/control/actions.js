@@ -34,7 +34,13 @@ function _nextId( collection ) {
 	return parseInt( _( collection ).keys().max() ) + 1;
 }
 
-export const createBin = _modAction( 'createBin', 'loc_id' );
+export const createBin = _modAction( 'createBin', 'loc_id',
+	action => ( dispatch, getState ) => {
+		dispatch( u( {
+			bin_id: _nextId( getState().bin ),
+		}, action ) );
+	},
+);
 
 export const createItem = _modAction(
 	'createItem',
@@ -49,31 +55,41 @@ export const createItem = _modAction(
 	},
 );
 
-export const createItemFitted = _modAction( 'createItemFitted', 'loc_id', 'size', ( action ) => ( dispatch, getState ) => {
-	let state = getState();
-	let denormalizedLocation = denormalize(
-		state.locations[ action.loc_id ],
-		schema.location,
-		state,
-	);
+export const createItemFitted = _modAction(
+	'createItemFitted',
+	'loc_id',
+	'size',
+	( action ) => ( dispatch, getState ) => {
+		let state = getState();
+		let denormalizedLocation = denormalize(
+			state.locations[ action.loc_id ],
+			schema.location,
+			state,
+		);
 
-	// Randomly choose one of the emptiest bins
-	let [ emptiest_bin ] = _( denormalizedLocation.bins )
-		.map( bin => [ bin.id, _.sumBy( bin.items, ( item ) => parseInt( item.size || 1 ) ) ] )
-		.shuffle()
-		.minBy( 1 );
+		// Randomly choose one of the emptiest bins
+		let [ emptiest_bin ] = _( denormalizedLocation.bins )
+			.map( bin => [ bin.id, _.sumBy( bin.items, ( item ) => parseInt( item.size || 1 ) ) ] )
+			.shuffle()
+			.minBy( 1 );
 
+		dispatch( u( {
+			item_id: _nextId( state.items ),
+			name: prompt( 'Name of item:' ),
+			bin_id: emptiest_bin,
+		}, action ) );
+	}
+);
+
+export const createLocation = _modAction( 'createLocation', ( action ) => ( dispatch, getState ) => {
 	dispatch( u( {
-		item_id: _nextId( state.items ),
-		name: prompt( 'Name of item:' ),
-		bin_id: emptiest_bin,
+		loc_id: _nextId( getState().locations ),
+		name: prompt( 'Name of location:' ),
 	}, action ) );
 } );
 
-export const createLocation = _modAction( 'createLocation', ( action ) => ( dispatch, getState ) => {
-	dispatch( u( {name: prompt( 'Name of location:' )}, action ) );
-} );
-export const deleteItem = _modAction( 'deleteItem', 'loc_id', 'bin_no', 'index' );
+export const deleteItem = _modAction( 'deleteItem', 'bin_id', 'item_id' );
+
 export const exportData = _action( 'exportData', () => ( dispatch, getState ) => {
 	saveAs( new Blob( [ JSON.stringify( getState() ) ], {type: 'application/json;charset=utf-8'} ), 'orang.json' );
 } );
@@ -108,4 +124,4 @@ export const save = _action( 'save', ( action ) => async ( dispatch, getState ) 
 
 export const setSearch = _action( 'setSearch', 'search' );
 
-export const updateItem = _modAction( 'updateItem', 'loc_id', 'bin_no', 'index', 'changes');
+export const updateItem = _modAction( 'updateItem', 'loc_id', 'bin_no', 'index', 'changes' );
