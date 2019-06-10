@@ -1,5 +1,4 @@
 import '../scss/orang.scss';
-import 'font-awesome-sass-loader';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

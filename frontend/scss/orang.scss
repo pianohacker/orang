@@ -3,6 +3,9 @@
 // 23.611 31.474 41.955 55.927 74.550 99.376 132.468 176.580 235.381 313.763
 // (from ratio of 1.333)
 
+$fa-font-path: '../../node_modules/font-awesome/fonts';
+@import 'node_modules/font-awesome/scss/font-awesome.scss';
+
 * {
 	box-sizing: border-box;
 }
@@ -89,6 +92,7 @@ body {
 		> button {
 			flex-grow: 0;
 			font-size: 1.333rem;
+			margin-top: .316em;
 			opacity: .178;
 			transition: opacity .316s ease;
 		}
@@ -100,10 +104,11 @@ body {
 
 	.items {
 		margin: 0;
-		padding-left: .75em;
-		padding-right: .75em;
-		padding-top: .75em;
-		padding-bottom: 1.776em;
+		padding-left: 0;
+		padding-right: .866em;
+		padding-top: 1em;
+		padding-bottom: 2.336em;
+		width: 100%;
 
 		// Overflow shadows, from http://lea.verou.me/2012/04/background-attachment-local/
 		overflow: hidden;
@@ -140,14 +145,21 @@ button {
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	font-family: "Crimson Text";
-	font-size: 1em;
 	text-shadow: 0 0 2px rgba(0, 0, 0, .3);
 	transition: text-shadow .316s ease;
 
 	&:hover {
 		text-shadow: 0 0 5px #8AB5F4;
 	}
+}
+
+.cyclable {
+	font-family: "Lato";
+	font-size: .866em;
+	opacity: .6;
+	padding-right: 1rem;
+	text-align: center;
+	width: 2.368rem;
 }
 
 @keyframes highlight {
@@ -165,22 +177,24 @@ button {
 }
 
 .item {
-	list-style-type: none;
-	padding-bottom: .316em;
+	display: flex;
+	line-height: 1.776em;
+
+	@media (pointer: coarse) {
+		line-height: 2.366em;
+	}
 
 	&:last-child {
 		padding-bottom: 0;
 	}
 
 	> button {
-		margin-left: .75em;
-		opacity: .178;
-		opacity: 0;
-		transition: opacity .316s ease;
-	}
+		display: inline-block;
+		opacity: .6;
 
-	&:hover > button {
-		opacity: 1;
+		&.end {
+			margin-left: auto;
+		}
 	}
 }
 
@@ -222,11 +236,6 @@ button {
 	}
 
 	.location-tools {
-		opacity: .178;
 		transition: opacity .316s ease;
-	}
-
-	&:hover .location-tools {
-		opacity: 1;
 	}
 }

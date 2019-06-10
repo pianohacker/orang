@@ -133,7 +133,7 @@ const persistedReducer = persistReducer(
 	{
 		key: 'root',
 		storage,
-		whitelist: [ 'locations' ],
+		whitelist: [ 'locations', 'bins', 'items' ],
 
 		migrate,
 		version: MIGRATE_VERSION,

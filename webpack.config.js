@@ -3,7 +3,6 @@ const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
 module.exports = {
 	entry: [
-		'font-awesome-sass-loader!./font-awesome-sass.config.js',
 		'./frontend/js/orang.js',
 	],
 
@@ -19,9 +18,12 @@ module.exports = {
 			{
 				test: /\.scss$/,
 				use: [
-					'style-loader',
-					'css-loader',
-					'sass-loader',
+					{loader: 'style-loader'},
+					{loader: 'css-loader'},
+					{
+						loader: 'sass-loader',
+						options: { implementation: require( 'sass' ) },
+					},
 				],
 			},
 			{

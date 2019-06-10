@@ -5,16 +5,21 @@ import u from 'updeep';
 import * as actions from '../control/actions';
 
 class SearchBar extends Component {
+	constructor( props ) {
+		super( props );
+		this.inputRef = React.createRef();
+	}
+
 	render() {
 		return (
-			<input ref="input" id="searchbar" type="search" onChange={( event ) => {
+			<input ref={this.inputRef} id="searchbar" type="search" onChange={( event ) => {
 				this.props.onSearchChanged( event.target.value )
 			}}/>
 		);
 	}
 
 	componentDidMount() {
-		shortcut.add( 'f', () => React.findDOMNode( this.refs.input ).focus(), {disable_in_input: true} );
+		shortcut.add( 'f', () => this.inputRef.current.focus(), {disable_in_input: true} );
 	}
 }
 

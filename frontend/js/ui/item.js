@@ -15,21 +15,22 @@ class Item extends Component {
 
 		return (
 			<li className={'item' + ( highlight ? ' highlight' : '' )}>
-				{'('}<common.CycleOption
+				<common.CycleOption
 					fixedWidth="1em"
 					onChange={( value ) => dispatch( actions.updateItem( this.props.id, {size: value} ) )}
 					value={this.props.size || 1}
 					choices={_( common.SIZE_NAMES ).toPairs().sortBy( ( [ size, _text ] ) => parseInt( size ) ).value()}
-				/>{') '}
+				/>
 				<common.EditableText
 					onChange={( value ) => dispatch( actions.updateItem( this.props.id, {name: value} ) )}
 					text={this.props.name}
 				/>
 				<button
+					className="end"
 					title="Delete item"
 					onClick={() => dispatch( actions.deleteItem( this.props.bin_id, this.props.id ) )}
 				>
-					-
+					<i className="fa fa-trash-o"></i>
 				</button>
 			</li>
 		)

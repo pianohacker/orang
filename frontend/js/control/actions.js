@@ -124,4 +124,4 @@ export const save = _action( 'save', ( action ) => async ( dispatch, getState ) 
 
 export const setSearch = _action( 'setSearch', 'search' );
 
-export const updateItem = _modAction( 'updateItem', 'loc_id', 'bin_no', 'index', 'changes' );
+export const updateItem = _modAction( 'updateItem', 'item_id', 'changes' );
