@@ -31,7 +31,11 @@ function _modAction( name, ...fields ) {
 };
 
 function _nextId( collection ) {
-	return parseInt( _( collection ).keys().max() ) + 1;
+	return _( collection )
+		.keys()
+		.map( key => parseInt( key ) )
+		.filter( key => Number.isInteger( key ) )
+		.max() + 1;
 }
 
 export const createBin = _modAction( 'createBin', 'loc_id',

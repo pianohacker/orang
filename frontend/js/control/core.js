@@ -97,6 +97,7 @@ function itemsReducer( items = {}, action ) {
 			case 'createItemFitted':
 			case 'createItem':
 				draft[ action.item_id ] = {
+					id: action.item_id,
 					name: action.name,
 					size: action.size,
 					timeCreated: new Date(),
@@ -116,7 +117,11 @@ function itemsReducer( items = {}, action ) {
 				break;
 
 			case 'load':
-				return action.items;
+				return immer( action.items, loadedItemsDraft => {
+					for ( let id in action.items ) {
+						loadedItemsDraft[ id ].id = parseInt( id );
+					}
+				} );
 		}
 	} );
 }
