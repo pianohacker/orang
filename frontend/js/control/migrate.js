@@ -10,7 +10,9 @@ const migrations = {
 		let itemId = 1;
 		let locationId = 1;
 
-		let locations = state.locations || state || [];
+		let locations = Array.isArray( state.locations ) ? state.locations :
+			Array.isArray( state ) ? state :
+				[];
 
 		return {
 			locations: locations.map( location => ( {

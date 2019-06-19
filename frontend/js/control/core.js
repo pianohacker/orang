@@ -38,11 +38,11 @@ function locationsReducer( locations = {}, action ) {
 
 		switch ( action.type ) {
 			case 'createLocation':
-				draft.push( {
+				draft[ action.loc_id ] = {
 					id: action.loc_id,
 					name: action.name,
-					bins: [ [] ],
-				} );
+					bins: [],
+				};
 				break;
 
 			case 'createBin':

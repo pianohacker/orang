@@ -12,11 +12,11 @@ class _Bin extends Component {
 	render() {
 		const { dispatch } = this.props;
 
-		let sortedItems = [].concat( this.props.items );
+		let sortedItems = [].concat( this.props.items || [] );
 		sortedItems.sort((a, b) => a.name.localeCompare(b.name))
 
 		return (
-			<div className={'bin' + ( this.props.items.length == 0 ? ' empty' : '' )}>
+			<div className={'bin' + ( sortedItems.length == 0 ? ' empty' : '' )}>
 				<header>
 					<h1>{this.props.bin_no + 1}</h1>
 					<button title="Add item" onClick={() => dispatch( actions.createItem( this.props.loc_id, this.props.id, 1 ) )}><i className="fa fa-plus"></i></button>
@@ -29,7 +29,7 @@ class _Bin extends Component {
 	}
 }
 const Bin = connect(
-	( state, { id } ) => denormalize( state.bins[id], schema.bin, state )
+	( state, { id } ) => denormalize( state.bins[id], schema.bin, state ) || {}
 )( _Bin );
 
 class _Location extends Component {
@@ -56,7 +56,7 @@ class _Location extends Component {
 				</header>
 				<div className="bins">
 					{
-						(this.props.bins || []).map( ( bin_id, bin_no ) => <Bin key={bin_id} id={bin_id} bin_no={bin_no} />)}
+						(this.props.bins || []).map( ( bin_id, bin_no ) => <Bin key={bin_id} id={bin_id} bin_no={bin_no} />)
 					}
 				</div>
 			</div>
@@ -70,7 +70,7 @@ class Locations extends Component {
 	render() {
 		return (
 			<div id="locations">
-				{ this.props.locations.map( loc_id => <Location key={loc_id} id={loc_id} /> )}
+				{ this.props.locations.map( loc_id => <Location key={loc_id} id={loc_id} /> ) }
 			</div>
 		);
 	}

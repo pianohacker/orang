@@ -31,17 +31,19 @@ function _modAction( name, ...fields ) {
 };
 
 function _nextId( collection ) {
-	return _( collection )
+	const oldMax = _( collection )
 		.keys()
 		.map( key => parseInt( key ) )
 		.filter( key => Number.isInteger( key ) )
-		.max() + 1;
+		.max();
+
+	return ( Number.isInteger( oldMax ) ? oldMax : 0 ) + 1;
 }
 
 export const createBin = _modAction( 'createBin', 'loc_id',
 	action => ( dispatch, getState ) => {
 		dispatch( u( {
-			bin_id: _nextId( getState().bin ),
+			bin_id: _nextId( getState().bins ),
 		}, action ) );
 	},
 );

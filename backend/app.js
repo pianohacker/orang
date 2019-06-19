@@ -27,13 +27,11 @@ db.serialize( () => {
 
 app.get( '/api/v1/data', ( req, res ) => {
 	db.get( 'SELECT data FROM user_data', ( err, row ) => {
-		res.json( {data: JSON.parse( row.data )} );
+		res.json( { data: JSON.parse( ( row || {} ).data || '{}' ) } );
 	} );
 } );
 
 app.post( '/api/v1/data', ( req, res ) => {
-	console.log( req.body );
-
 	db.run( 'INSERT OR REPLACE INTO user_data(user, data) VALUES("", ?)', JSON.stringify( req.body.data ), () => {
 		res.status( 200 );
 		res.end();
