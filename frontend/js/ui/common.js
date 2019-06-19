@@ -28,6 +28,8 @@ export class EditableText extends Component {
 		this.state = {
 			editing: false,
 		};
+
+		this.inputRef = React.createRef();
 	}
 
 	onKeyDown( e ) {
@@ -49,16 +51,18 @@ export class EditableText extends Component {
 	render() {
 		return (
 			this.state.editing
-				? <input ref="input" defaultValue={this.props.text} onKeyDown={( e ) => this.onKeyDown( e )} />
+				? <input ref={this.inputRef} defaultValue={this.props.text} onKeyDown={( e ) => this.onKeyDown( e )} />
 				: <span className="editable" onClick={() => this.onClick()}>{this.props.text}</span>
 		)
 	}
 
 	componentDidUpdate() {
-		let input = React.findDOMNode( this.refs.input );
+		let input = this.inputRef.current;
 		if ( !input ) return; // Not editing
 
 		input.focus();
+
+		// Move cursor to end of input
 		input.setSelectionRange( this.props.text.length, this.props.text.length );
 	}
 }
